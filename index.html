@@ -37,30 +37,51 @@
     .results{display:flex;align-items:center;justify-content:space-between;padding:21px 0 14px;color:var(--muted);font:11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
     .results strong{color:#ddd;font-weight:500}
     .gallery{columns:4 250px;column-gap:12px;padding-bottom:70px}
-    .card{display:block;width:100%;break-inside:avoid;margin:0 0 12px;padding:0;border:1px solid #292929;border-radius:var(--radius);overflow:hidden;text-align:left;background:#151515;cursor:zoom-in;position:relative;transition:border-color .2s,transform .2s}
-    .card:hover{border-color:#777;transform:translateY(-2px)}
-    .thumb{display:block;width:100%;height:auto;min-height:90px;max-height:700px;object-fit:cover;background:#1c1c1c}
-    .thumb.loading{min-height:170px}
-    .card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px 11px;border-top:1px solid #292929}
+    .card{display:block;width:100%;break-inside:avoid;margin:0 0 12px;padding:0;border:1px solid #292929;border-radius:var(--radius);overflow:hidden;text-align:left;background:#151515;cursor:zoom-in;position:relative;opacity:0;transform:translate3d(0,16px,0) scale(.99);transition:border-color .28s ease,transform .38s cubic-bezier(.2,.75,.25,1),box-shadow .38s ease;will-change:transform,opacity}
+    .card.is-visible{opacity:1;transform:none;animation:card-enter .68s cubic-bezier(.2,.75,.25,1) backwards;animation-delay:var(--stagger,0ms)}
+    .card:hover{border-color:#777;transform:translate3d(0,-4px,0) scale(1.005);box-shadow:0 14px 34px rgba(0,0,0,.22)}
+    .card:focus-visible{outline:2px solid #eee;outline-offset:3px}
+    @keyframes card-enter{from{opacity:0;transform:translate3d(0,18px,0) scale(.985);filter:blur(4px)}to{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0)}}
+    .media{display:block;position:relative;overflow:hidden;isolation:isolate;min-height:150px;background:#1b1b1b}
+    .skeleton{position:absolute;inset:0;z-index:1;overflow:hidden;background:linear-gradient(105deg,#171717 20%,#202020 37%,#292929 50%,#202020 63%,#171717 80%);background-size:220% 100%;animation:skeleton-wave 1.55s ease-in-out infinite}
+    .skeleton:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.035),transparent);transform:translateX(-100%);animation:skeleton-sweep 1.8s ease-in-out infinite}
+    @keyframes skeleton-wave{0%{background-position:100% 0}100%{background-position:-120% 0}}
+    @keyframes skeleton-sweep{to{transform:translateX(100%)}}
+    .thumb{display:block;position:relative;z-index:2;width:100%;height:auto;min-height:150px;max-height:700px;object-fit:cover;background:#1c1c1c;opacity:0;transform:scale(1.035);filter:blur(8px);transition:opacity .65s ease,transform 1.1s cubic-bezier(.2,.7,.2,1),filter .75s ease}
+    .media.is-loaded .thumb{opacity:1;transform:scale(1);filter:blur(0);min-height:0}
+    .media.is-loaded .skeleton{opacity:0;transition:opacity .55s ease}
+    .media.is-loaded{min-height:0;background:#151515}
+    .media.is-error{display:grid;min-height:150px;place-items:center;background:linear-gradient(145deg,#191919,#222)}
+    .media.is-error .skeleton,.media.is-error .thumb{display:none}
+    .load-error{padding:25px 12px;color:#777;font:10px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;text-align:center;letter-spacing:.08em;text-transform:uppercase}
+    .card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px 11px;border-top:1px solid #292929;transition:background .25s ease}
+    .card:hover .card-meta{background:#1c1c1c}
     .filename{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c8c8c8;font-size:11px}
     .format{flex:none;color:#777;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}
     .empty{display:none;padding:70px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:8px;font-size:13px}
     footer{border-top:1px solid var(--line);padding:22px 0 35px;color:#666;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;display:flex;justify-content:space-between;gap:20px;text-transform:uppercase;letter-spacing:.08em}
     footer a{text-decoration:none;color:#aaa}
-    .viewer{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;padding:24px}
-    .viewer.open{display:flex}
-    .viewer-inner{width:100%;height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:12px;min-height:0}
+    .viewer{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .32s ease,visibility .32s ease,backdrop-filter .32s ease;backdrop-filter:blur(0)}
+    .viewer.open{opacity:1;visibility:visible;pointer-events:auto;backdrop-filter:blur(12px)}
+    .viewer-inner{width:100%;height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:12px;min-height:0;transform:translateY(12px) scale(.985);opacity:0;transition:transform .42s cubic-bezier(.2,.8,.2,1),opacity .35s ease}
+    .viewer.open .viewer-inner{transform:translateY(0) scale(1);opacity:1}
     .viewer-top,.viewer-bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;color:#aaa;font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
     .viewer-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .viewer-actions{display:flex;align-items:center;gap:8px}
     .viewer-btn{width:40px;height:40px;background:#191919;border:1px solid #393939;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:18px;color:#ddd}
     .viewer-btn:hover{background:#eee;color:#111}
-    .viewer-stage{display:flex;align-items:center;justify-content:center;gap:16px;min-height:0}
-    .viewer-image{display:block;max-width:min(88vw,1700px);max-height:calc(100vh - 150px);width:auto;height:auto;object-fit:contain;box-shadow:0 12px 60px rgba(0,0,0,.35)}
+    .viewer-stage{position:relative;display:flex;align-items:center;justify-content:center;gap:16px;min-height:0;isolation:isolate}
+    .viewer-skeleton{position:absolute;z-index:-1;width:min(58vw,680px);height:min(62vh,520px);border-radius:8px;background:linear-gradient(105deg,#171717 20%,#222 38%,#2b2b2b 50%,#222 62%,#171717 80%);background-size:220% 100%;animation:skeleton-wave 1.55s ease-in-out infinite;opacity:1;transition:opacity .25s ease}
+    .viewer-stage.is-ready .viewer-skeleton{opacity:0}
+    .viewer-image{display:block;max-width:min(88vw,1700px);max-height:calc(100vh - 150px);width:auto;height:auto;object-fit:contain;box-shadow:0 12px 60px rgba(0,0,0,.35);opacity:0;transform:scale(.985);filter:blur(8px);transition:opacity .42s ease,transform .65s cubic-bezier(.2,.7,.2,1),filter .5s ease}
+    .viewer-image.is-loaded{opacity:1;transform:scale(1);filter:blur(0)}
+    .viewer-image.is-error{display:none}
+    .viewer-load-error{position:absolute;max-width:260px;color:#777;text-align:center;font:11px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace}
     .viewer-nav{flex:none}
     .viewer-bottom a{color:#bbb;text-decoration:none;border-bottom:1px solid #555;padding-bottom:3px}
     @media(max-width:700px){.shell{width:calc(100% - 28px)}header{padding-top:32px}.intro{align-items:start;flex-direction:column;gap:12px}.tools{align-items:stretch;flex-direction:column;gap:9px}.search-wrap{width:100%}.filters{justify-content:space-between}.filter{padding:8px 9px}.gallery{columns:2 145px;column-gap:8px}.card{margin-bottom:8px}.card-meta{padding:8px}.filename{font-size:10px}.viewer{padding:12px}.viewer-stage{gap:5px}.viewer-image{max-width:calc(100vw - 76px);max-height:calc(100vh - 150px)}.viewer-btn{width:34px;height:34px}footer{font-size:9px;flex-direction:column}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+    @media(max-width:700px){.media{min-height:125px}.thumb{min-height:125px}.media.is-loaded .thumb{min-height:0}.viewer-skeleton{width:68vw;height:48vh}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important;filter:none!important}.card{opacity:1;transform:none}.card.is-visible{animation:none}.thumb,.viewer-image{opacity:1;transform:none;filter:none}.skeleton{animation:none}}
   </style>
 </head>
 <body>
@@ -106,7 +127,9 @@
       </div>
       <div class="viewer-stage">
         <button class="viewer-btn viewer-nav" id="previous" aria-label="Předchozí obrázek" title="Předchozí (←)">‹</button>
+        <span class="viewer-skeleton" id="viewer-skeleton" aria-hidden="true"></span>
         <img class="viewer-image" id="viewer-image" alt="">
+        <span class="viewer-load-error" id="viewer-load-error" hidden>ORIGINÁL SE NEPODAŘILO NAČÍST</span>
         <button class="viewer-btn viewer-nav" id="next" aria-label="Další obrázek" title="Další (→)">›</button>
       </div>
       <div class="viewer-bottom"><span>← / → NAVIGATE · ESC CLOSE</span><a id="open-original" href="#" target="_blank" rel="noreferrer">OPEN ORIGINAL ↗</a></div>
@@ -187,29 +210,60 @@
     const viewerName = document.getElementById("viewer-name");
     const viewerIndex = document.getElementById("viewer-index");
     const openOriginal = document.getElementById("open-original");
+    const viewerStage = document.querySelector(".viewer-stage");
+    const viewerLoadError = document.getElementById("viewer-load-error");
     let activeFilter = "all";
     let visibleFiles = [...FILES];
     let activeIndex = 0;
     let lastFocus = null;
+    const cardObserver = "IntersectionObserver" in window
+      ? new IntersectionObserver(entries => entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            cardObserver.unobserve(entry.target);
+          }
+        }), {rootMargin:"100px 0px", threshold:0.02})
+      : null;
 
     function render(){
+      cardObserver?.disconnect();
       const term = search.value.trim().toLocaleLowerCase("cs");
       visibleFiles = FILES.filter(name => (activeFilter === "all" || category(name) === activeFilter) && name.toLocaleLowerCase("cs").includes(term));
       gallery.replaceChildren();
       const frag = document.createDocumentFragment();
+      const pendingImages = [];
       visibleFiles.forEach((name, index) => {
         const card = document.createElement("button");
         card.type = "button";
         card.className = "card";
+        card.style.setProperty("--stagger", `${(index % 8) * 42}ms`);
         card.setAttribute("aria-label", `Otevřít obrázek ${name}`);
+
+        const media = document.createElement("span");
+        media.className = "media";
+        const skeleton = document.createElement("span");
+        skeleton.className = "skeleton";
+        skeleton.setAttribute("aria-hidden", "true");
         const img = document.createElement("img");
-        img.className = "thumb loading";
-        img.src = urlFor(name);
+        img.className = "thumb";
         img.alt = name;
         img.loading = "lazy";
         img.decoding = "async";
-        img.addEventListener("load", () => img.classList.remove("loading"), {once:true});
-        img.addEventListener("error", () => { img.alt = "Obrázek se nepodařilo načíst"; img.style.minHeight = "120px"; }, {once:true});
+        img.addEventListener("load", () => {
+          media.classList.add("is-loaded");
+          skeleton.remove();
+        }, {once:true});
+        img.addEventListener("error", () => {
+          media.classList.add("is-error");
+          skeleton.remove();
+          const error = document.createElement("span");
+          error.className = "load-error";
+          error.textContent = "PREVIEW UNAVAILABLE";
+          media.append(error);
+          img.alt = "Obrázek se nepodařilo načíst";
+        }, {once:true});
+        media.append(skeleton, img);
+
         const meta = document.createElement("span");
         meta.className = "card-meta";
         const label = document.createElement("span");
@@ -219,11 +273,17 @@
         ext.className = "format";
         ext.textContent = name.split(".").pop();
         meta.append(label, ext);
-        card.append(img, meta);
+        card.append(media, meta);
         card.addEventListener("click", () => openViewer(index));
         frag.append(card);
+        pendingImages.push([img, name]);
       });
       gallery.append(frag);
+      pendingImages.forEach(([img, name]) => { img.src = urlFor(name); });
+      gallery.querySelectorAll(".card").forEach(card => {
+        if (cardObserver) cardObserver.observe(card);
+        else card.classList.add("is-visible");
+      });
       visibleCount.textContent = `${visibleFiles.length} ITEMS`;
       empty.style.display = visibleFiles.length ? "none" : "block";
     }
@@ -240,16 +300,37 @@
     function updateViewer(){
       const name = visibleFiles[activeIndex];
       const url = urlFor(name);
-      viewerImage.src = url;
+      viewerImage.classList.remove("is-loaded", "is-error");
+      viewerStage.classList.remove("is-ready");
+      viewerLoadError.hidden = true;
       viewerImage.alt = name;
       viewerName.textContent = name;
       viewerIndex.textContent = `${String(activeIndex + 1).padStart(2,"0")} / ${String(visibleFiles.length).padStart(2,"0")}`;
       openOriginal.href = url;
+      viewerImage.src = url;
+      if (viewerImage.complete && viewerImage.naturalWidth) {
+        viewerImage.classList.add("is-loaded");
+        viewerStage.classList.add("is-ready");
+      }
     }
+    viewerImage.addEventListener("load", () => {
+      viewerImage.classList.add("is-loaded");
+      viewerImage.classList.remove("is-error");
+      viewerStage.classList.add("is-ready");
+      viewerLoadError.hidden = true;
+    });
+    viewerImage.addEventListener("error", () => {
+      viewerImage.classList.add("is-error");
+      viewerStage.classList.add("is-ready");
+      viewerLoadError.hidden = false;
+    });
     function closeViewer(){
       viewer.classList.remove("open");
       document.body.style.overflow = "";
       viewerImage.removeAttribute("src");
+      viewerImage.classList.remove("is-loaded", "is-error");
+      viewerStage.classList.remove("is-ready");
+      viewerLoadError.hidden = true;
       if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
     }
     function moveViewer(step){
