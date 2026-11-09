@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="Obrazová galerie repozitáře akcizur/rewi43 — 54 obrázků.">
+  <title>REWI43 — Image archive</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101010;--panel:#171717;--panel-2:#202020;--line:#303030;--text:#f2f2f2;--muted:#858585;--soft:#b8b8b8;--radius:8px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+    button,input{font:inherit}
+    button{color:inherit}
+    a{color:inherit}
+    .shell{width:min(1760px,100% - 48px);margin:auto}
+    header{padding:48px 0 28px;border-bottom:1px solid var(--line)}
+    .eyebrow{display:flex;align-items:center;gap:10px;color:var(--muted);font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.15em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#ddd;display:inline-block}
+    h1{font-size:clamp(42px,8vw,104px);line-height:.92;letter-spacing:-.075em;font-weight:650;margin:25px 0 17px}
+    h1 span{color:#777}
+    .intro{display:flex;justify-content:space-between;align-items:end;gap:24px;color:var(--muted);font-size:13px;line-height:1.6}
+    .intro p{max-width:560px;margin:0}
+    .repo-link{white-space:nowrap;text-decoration:none;border-bottom:1px solid #777;padding-bottom:3px;color:#ddd}
+    .toolbar{position:sticky;top:0;z-index:5;background:rgba(16,16,16,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+    .tools{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding-top:12px;padding-bottom:12px}
+    .filters{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .filter{border:1px solid transparent;background:transparent;color:var(--muted);padding:9px 13px;border-radius:6px;font-size:12px;cursor:pointer;transition:.18s ease}
+    .filter:hover{color:var(--text);background:var(--panel)}
+    .filter[aria-pressed="true"]{background:#eee;color:#111;border-color:#eee}
+    .search-wrap{position:relative;width:min(340px,42vw)}
+    .search-wrap:before{content:"⌕";position:absolute;left:13px;top:50%;transform:translateY(-53%);font-size:21px;color:var(--muted);pointer-events:none}
+    .search{width:100%;height:40px;background:#171717;border:1px solid var(--line);border-radius:6px;color:var(--text);outline:none;padding:0 13px 0 39px;font-size:12px}
+    .search:focus{border-color:#777}
+    .search::placeholder{color:#666}
+    .results{display:flex;align-items:center;justify-content:space-between;padding:21px 0 14px;color:var(--muted);font:11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase}
+    .results strong{color:#ddd;font-weight:500}
+    .gallery{columns:4 250px;column-gap:12px;padding-bottom:70px}
+    .card{display:block;width:100%;break-inside:avoid;margin:0 0 12px;padding:0;border:1px solid #292929;border-radius:var(--radius);overflow:hidden;text-align:left;background:#151515;cursor:zoom-in;position:relative;transition:border-color .2s,transform .2s}
+    .card:hover{border-color:#777;transform:translateY(-2px)}
+    .thumb{display:block;width:100%;height:auto;min-height:90px;max-height:700px;object-fit:cover;background:#1c1c1c}
+    .thumb.loading{min-height:170px}
+    .card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 11px 11px;border-top:1px solid #292929}
+    .filename{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c8c8c8;font-size:11px}
+    .format{flex:none;color:#777;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}
+    .empty{display:none;padding:70px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:8px;font-size:13px}
+    footer{border-top:1px solid var(--line);padding:22px 0 35px;color:#666;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;display:flex;justify-content:space-between;gap:20px;text-transform:uppercase;letter-spacing:.08em}
+    footer a{text-decoration:none;color:#aaa}
+    .viewer{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.94);display:none;align-items:center;justify-content:center;padding:24px}
+    .viewer.open{display:flex}
+    .viewer-inner{width:100%;height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:12px;min-height:0}
+    .viewer-top,.viewer-bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;color:#aaa;font:11px ui-monospace,SFMono-Regular,Menlo,monospace}
+    .viewer-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .viewer-actions{display:flex;align-items:center;gap:8px}
+    .viewer-btn{width:40px;height:40px;background:#191919;border:1px solid #393939;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:18px;color:#ddd}
+    .viewer-btn:hover{background:#eee;color:#111}
+    .viewer-stage{display:flex;align-items:center;justify-content:center;gap:16px;min-height:0}
+    .viewer-image{display:block;max-width:min(88vw,1700px);max-height:calc(100vh - 150px);width:auto;height:auto;object-fit:contain;box-shadow:0 12px 60px rgba(0,0,0,.35)}
+    .viewer-nav{flex:none}
+    .viewer-bottom a{color:#bbb;text-decoration:none;border-bottom:1px solid #555;padding-bottom:3px}
+    @media(max-width:700px){.shell{width:calc(100% - 28px)}header{padding-top:32px}.intro{align-items:start;flex-direction:column;gap:12px}.tools{align-items:stretch;flex-direction:column;gap:9px}.search-wrap{width:100%}.filters{justify-content:space-between}.filter{padding:8px 9px}.gallery{columns:2 145px;column-gap:8px}.card{margin-bottom:8px}.card-meta{padding:8px}.filename{font-size:10px}.viewer{padding:12px}.viewer-stage{gap:5px}.viewer-image{max-width:calc(100vw - 76px);max-height:calc(100vh - 150px)}.viewer-btn{width:34px;height:34px}footer{font-size:9px;flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell">
+      <div class="eyebrow">AKCIZUR / REWI43 / MEDIA INDEX</div>
+      <h1>IMAGE <span>ARCHIVE.</span></h1>
+      <div class="intro">
+        <p>Obrazový přehled souborů z repozitáře. Vyber náhled pro zobrazení originálu, procházej šipkami nebo vyhledej soubor podle názvu.</p>
+        <a class="repo-link" href="https://github.com/akcizur/rewi43" target="_blank" rel="noreferrer">OPEN REPOSITORY ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="shell tools">
+      <nav class="filters" aria-label="Filtr galerie">
+        <button class="filter" data-filter="all" aria-pressed="true">Vše <span data-count="all">54</span></button>
+        <button class="filter" data-filter="generated" aria-pressed="false">Generované</button>
+        <button class="filter" data-filter="screens" aria-pressed="false">Snímky</button>
+        <button class="filter" data-filter="other" aria-pressed="false">Ostatní</button>
+      </nav>
+      <label class="search-wrap"><input class="search" id="search" type="search" placeholder="Hledat soubor…" autocomplete="off" aria-label="Hledat soubor"></label>
+    </div>
+  </div>
+
+  <main class="shell">
+    <div class="results"><span>COLLECTION / <strong id="visible-count">54 ITEMS</strong></span><span id="repo-count">54 FILES · MAIN</span></div>
+    <section class="gallery" id="gallery" aria-label="Obrázky z repozitáře"></section>
+    <div class="empty" id="empty">Žádné obrázky neodpovídají hledání.</div>
+  </main>
+
+  <footer class="shell">
+    <span>REWI43 — IMAGE ARCHIVE</span>
+    <span>54 ORIGINAL FILES · <a href="https://github.com/akcizur/rewi43/tree/main" target="_blank" rel="noreferrer">SOURCE ON GITHUB ↗</a></span>
+  </footer>
+
+  <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Prohlížeč obrázků">
+    <div class="viewer-inner">
+      <div class="viewer-top">
+        <span class="viewer-name" id="viewer-name">—</span>
+        <div class="viewer-actions"><span id="viewer-index">01 / 54</span><button class="viewer-btn" id="close" aria-label="Zavřít" title="Zavřít (Esc)">×</button></div>
+      </div>
+      <div class="viewer-stage">
+        <button class="viewer-btn viewer-nav" id="previous" aria-label="Předchozí obrázek" title="Předchozí (←)">‹</button>
+        <img class="viewer-image" id="viewer-image" alt="">
+        <button class="viewer-btn viewer-nav" id="next" aria-label="Další obrázek" title="Další (→)">›</button>
+      </div>
+      <div class="viewer-bottom"><span>← / → NAVIGATE · ESC CLOSE</span><a id="open-original" href="#" target="_blank" rel="noreferrer">OPEN ORIGINAL ↗</a></div>
+    </div>
+  </div>
+
+  <script>
+    const FILES = [
+      "4mJE2Z8TP7YhaK77YGq1b0bICgwJ2m7revQ2pXgrnF7wNaB-Lc2PFmrIsGmAUC6SPcRGrB_tmrM9M0EAzpGcNPAnWpOmOvX7n_c-kp-sy0KDEnI-0pzDCpMVxFK3lbyk6Z1Wl_5x0kPTvMQpsqqztrgbGdc0zwOTrbfAYk1-M8f9uAgPn2I-eQ7BPARDX-pZ.jpg",
+      "Baldý agent v pokřivené knihovně.png",
+      "ChatGPT Image 29. 9. 2026 17_28_26.png",
+      "ChatGPT Image 29. 9. 2026 17_29_41.png",
+      "Gemini_Generated_Image_bjs7obbjs7obbjs7.jpg",
+      "Gemini_Generated_Image_bumkpcbumkpcbumk.jpg",
+      "Gemini_Generated_Image_is6qdeis6qdeis6q.jpg",
+      "Gemini_Generated_Image_km46pckm46pckm46.jpg",
+      "Gemini_Generated_Image_thqphythqphythqp.jpg",
+      "Gemini_Generated_Image_v7bcd2v7bcd2v7bc.jpg",
+      "Gemini_Generated_Image_vcevj5vcevj5vcev.jpg",
+      "Gemini_Generated_Image_x7waycx7waycx7wa.jpg",
+      "L u v.jpg",
+      "L u v.png",
+      "Nepojmenované (3).png",
+      "Nepojmenované (4).png",
+      "Nepojmenované (5).jpg",
+      "Nepojmenované (6).png",
+      "Obrázek ChatGPT 19. 10. 2026 21_37_00.png",
+      "Snímek obrazovky 2026-10-03 164254.png",
+      "Snímek obrazovky 2026-10-03 220006.png",
+      "Snímek obrazovky 2026-10-04 175340.png",
+      "Snímek obrazovky 2026-10-14 231929.png",
+      "Snímek obrazovky 2026-10-17 225113.png",
+      "Snímek obrazovky 2026-10-23 161322.png",
+      "Snímek obrazovky 2026-10-23 194735.png",
+      "Snímek obrazovky 2026-11-05 230747.png",
+      "UIaCF3DKUhiyS_9nmhHRbg@2k.webp",
+      "bytesized.png",
+      "gemini-2.5-flash-image_Přesně_ta_atmosféra_dostavění_Surový_beton_bez_zateplení_ještě_čistý_-0.jpg",
+      "high-level-description-a-black-and-white_cXZdOMx8WpG9w8ir_YDiIg_Z3sQzu-2RiqGmZfFlrJS5w.jpg",
+      "high-level-description-a-dark-analog-fil_0ZkoJu79VVWwS2-QWLQa5w_xouZM4oPQPSX2YcaUGJ26Q.jpg",
+      "high-level-description-a-darkened-nightt_jaVLOZcEVyKuu7a5Qk2Tfg_yNFLONwJRQKN74vVHlpikA_cover.jpg",
+      "high-level-description-a-dim-photograph-_np7_tVFlW7aVaVv9sCsswA_vheZko9_QqyYGU9Sdl9RKg.jpg",
+      "high-level-description-a-photograph-of-a_108rpiSZW-yxelkIXzTvfA_xouZM4oPQPSX2YcaUGJ26Q.jpg",
+      "high-level-description-a-photograph-of-a_6TsccnCsUniQOpGUfywV_g_xouZM4oPQPSX2YcaUGJ26Q.jpg",
+      "high-level-description-a-photograph-of-a_82_uhziuVqSRlORvKkRk-g_xouZM4oPQPSX2YcaUGJ26Q_cover.jpg",
+      "high-level-description-a-photograph-of-a_8SsuOEKfVSW6_oGl_ovvEA_yNFLONwJRQKN74vVHlpikA.jpg",
+      "high-level-description-a-photograph-of-a_GOmetbW4WNmX6jvE-U-zyA__4kTW_2VSzeD-ani-SNaIQ.jpg",
+      "high-level-description-a-photograph-of-a_Jp5woycxXsa22NVpElIhvw__4kTW_2VSzeD-ani-SNaIQ_cover.jpg",
+      "high-level-description-a-photograph-of-a_Rnw7Uh7LXsGWFv6v6KkRiQ__4kTW_2VSzeD-ani-SNaIQ.jpg",
+      "high-level-description-a-photograph-of-a_TI_mZI4tU_2oBLPO8m2FnA_vheZko9_QqyYGU9Sdl9RKg_cover.jpg",
+      "high-level-description-a-photograph-of-a_Wi4iuc1sXGeUId7wkVhedw_yNFLONwJRQKN74vVHlpikA.jpg",
+      "high-level-description-a-photograph-of-a_dSlUIHuXUoqmmrxl2psbwQ_vheZko9_QqyYGU9Sdl9RKg.jpg",
+      "high-level-description-a-photograph-of-a_k979kA4MU4679piaBAzCcw__4kTW_2VSzeD-ani-SNaIQ.jpg",
+      "high-level-description-a-photograph-of-a_mSDedOJbUgqkiimRYoHe-Q__4kTW_2VSzeD-ani-SNaIQ.jpg",
+      "high-level-description-a-photograph-of-a_ozQMdaubUiGTl9SuxAakeA__4kTW_2VSzeD-ani-SNaIQ.jpg",
+      "high-level-description-a-photograph-of-a_s8ULhykdUJ6aUByrmELmYQ_vheZko9_QqyYGU9Sdl9RKg.jpg",
+      "high-level-description-a-photograph-of-a_xBZm_CgRUmi0ZK74yI2Qhg__4kTW_2VSzeD-ani-SNaIQ.jpg",
+      "high-level-description-a-photograph-of-a_yIVJSXx8WSmbfajrLSoJqw__4kTW_2VSzeD-ani-SNaIQ.jpg",
+      "img01.png",
+      "instruction-caption-high-level-instructi_aGyHUgzaUiOHsp9G3cNPRA_W0a-46dzTvWyzhRzpS6mOg.jpg",
+      "mblegacyboot.jpg",
+      "superhot-menu-inspired-v0-mZU2NlO-Sty242NSeV8XjoPfaZ16ip_kNq2-1eIU4tg.webp"
+    ];
+
+    const RAW = "https://raw.githubusercontent.com/akcizur/rewi43/main/";
+    const category = name => {
+      if (name.startsWith("Snímek obrazovky")) return "screens";
+      if (/^(Baldý|ChatGPT Image|Gemini_|gemini-|high-level-description|instruction-caption)/i.test(name)) return "generated";
+      return "other";
+    };
+    const urlFor = name => RAW + encodeURIComponent(name);
+    const gallery = document.getElementById("gallery");
+    const search = document.getElementById("search");
+    const empty = document.getElementById("empty");
+    const visibleCount = document.getElementById("visible-count");
+    const viewer = document.getElementById("viewer");
+    const viewerImage = document.getElementById("viewer-image");
+    const viewerName = document.getElementById("viewer-name");
+    const viewerIndex = document.getElementById("viewer-index");
+    const openOriginal = document.getElementById("open-original");
+    let activeFilter = "all";
+    let visibleFiles = [...FILES];
+    let activeIndex = 0;
+    let lastFocus = null;
+
+    function render(){
+      const term = search.value.trim().toLocaleLowerCase("cs");
+      visibleFiles = FILES.filter(name => (activeFilter === "all" || category(name) === activeFilter) && name.toLocaleLowerCase("cs").includes(term));
+      gallery.replaceChildren();
+      const frag = document.createDocumentFragment();
+      visibleFiles.forEach((name, index) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "card";
+        card.setAttribute("aria-label", `Otevřít obrázek ${name}`);
+        const img = document.createElement("img");
+        img.className = "thumb loading";
+        img.src = urlFor(name);
+        img.alt = name;
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.addEventListener("load", () => img.classList.remove("loading"), {once:true});
+        img.addEventListener("error", () => { img.alt = "Obrázek se nepodařilo načíst"; img.style.minHeight = "120px"; }, {once:true});
+        const meta = document.createElement("span");
+        meta.className = "card-meta";
+        const label = document.createElement("span");
+        label.className = "filename";
+        label.textContent = name;
+        const ext = document.createElement("span");
+        ext.className = "format";
+        ext.textContent = name.split(".").pop();
+        meta.append(label, ext);
+        card.append(img, meta);
+        card.addEventListener("click", () => openViewer(index));
+        frag.append(card);
+      });
+      gallery.append(frag);
+      visibleCount.textContent = `${visibleFiles.length} ITEMS`;
+      empty.style.display = visibleFiles.length ? "none" : "block";
+    }
+
+    function openViewer(index){
+      if (!visibleFiles.length) return;
+      activeIndex = (index + visibleFiles.length) % visibleFiles.length;
+      lastFocus = document.activeElement;
+      updateViewer();
+      viewer.classList.add("open");
+      document.body.style.overflow = "hidden";
+      document.getElementById("close").focus();
+    }
+    function updateViewer(){
+      const name = visibleFiles[activeIndex];
+      const url = urlFor(name);
+      viewerImage.src = url;
+      viewerImage.alt = name;
+      viewerName.textContent = name;
+      viewerIndex.textContent = `${String(activeIndex + 1).padStart(2,"0")} / ${String(visibleFiles.length).padStart(2,"0")}`;
+      openOriginal.href = url;
+    }
+    function closeViewer(){
+      viewer.classList.remove("open");
+      document.body.style.overflow = "";
+      viewerImage.removeAttribute("src");
+      if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    }
+    function moveViewer(step){
+      activeIndex = (activeIndex + step + visibleFiles.length) % visibleFiles.length;
+      updateViewer();
+    }
+
+    document.querySelectorAll(".filter").forEach(button => button.addEventListener("click", () => {
+      activeFilter = button.dataset.filter;
+      document.querySelectorAll(".filter").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
+      render();
+    }));
+    search.addEventListener("input", render);
+    document.getElementById("close").addEventListener("click", closeViewer);
+    document.getElementById("previous").addEventListener("click", () => moveViewer(-1));
+    document.getElementById("next").addEventListener("click", () => moveViewer(1));
+    viewer.addEventListener("click", event => { if (event.target === viewer) closeViewer(); });
+    document.addEventListener("keydown", event => {
+      if (!viewer.classList.contains("open")) return;
+      if (event.key === "Escape") closeViewer();
+      if (event.key === "ArrowLeft") moveViewer(-1);
+      if (event.key === "ArrowRight") moveViewer(1);
+    });
+    render();
+  </script>
+</body>
+</html>
