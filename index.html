@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101010">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap" rel="stylesheet">
   <meta name="description" content="Obrazová galerie repozitáře akcizur/rewi43 — 54 obrázků.">
   <title>REWI43 — Image archive</title>
   <style>
@@ -82,6 +85,41 @@
     @media(max-width:700px){.shell{width:calc(100% - 28px)}header{padding-top:32px}.intro{align-items:start;flex-direction:column;gap:12px}.tools{align-items:stretch;flex-direction:column;gap:9px}.search-wrap{width:100%}.filters{justify-content:space-between}.filter{padding:8px 9px}.gallery{columns:2 145px;column-gap:8px}.card{margin-bottom:8px}.card-meta{padding:8px}.filename{font-size:10px}.viewer{padding:12px}.viewer-stage{gap:5px}.viewer-image{max-width:calc(100vw - 76px);max-height:calc(100vh - 150px)}.viewer-btn{width:34px;height:34px}footer{font-size:9px;flex-direction:column}}
     @media(max-width:700px){.media{min-height:125px}.thumb{min-height:125px}.media.is-loaded .thumb{min-height:0}.viewer-skeleton{width:68vw;height:48vh}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important;filter:none!important}.card{opacity:1;transform:none}.card.is-visible{animation:none}.thumb,.viewer-image{opacity:1;transform:none;filter:none}.skeleton{animation:none}}
+
+    /* Pixel typography — keep the existing gallery layout and motion. */
+    :root{--font-pixel:"Micro 5",ui-monospace,SFMono-Regular,Menlo,monospace;--radius:4px}
+    body,button,input,.eyebrow,.results,.format,.load-error,footer,.viewer-top,.viewer-bottom,.viewer-load-error{font-family:var(--font-pixel)}
+    body{letter-spacing:.015em}
+    h1{font-size:clamp(60px,10vw,132px);font-weight:400;letter-spacing:0;line-height:.86}
+    .eyebrow{font-size:22px;line-height:1.15;letter-spacing:.08em}
+    .intro{font-size:22px;line-height:1.25}
+    .repo-link{font-size:21px}
+    .filter{font-size:22px;line-height:1;padding:10px 13px;border-radius:4px;letter-spacing:.01em}
+    .filter-count{margin-left:4px;opacity:.7;font-size:.86em}
+    .search{height:46px;font-size:22px;letter-spacing:.015em;border-radius:4px;padding-left:42px}
+    .search:focus{border-color:#aaa;outline:1px solid #777;outline-offset:2px}
+    .results{font-size:19px;line-height:1.15;letter-spacing:.07em}
+    .filename{font-size:20px;letter-spacing:.01em}
+    .format{font-size:18px}
+    .load-error{font-size:18px;line-height:1.35}
+    .empty{font-size:23px;line-height:1.25;border-radius:4px}
+    footer{font-size:18px;line-height:1.2;letter-spacing:.07em}
+    .viewer-top,.viewer-bottom{font-size:20px;line-height:1.1}
+    .viewer-load-error{font-size:19px;line-height:1.3}
+    .filter:focus-visible,.viewer-btn:focus-visible{outline:2px solid #eee;outline-offset:3px}
+    .viewer-btn{font-family:ui-sans-serif,system-ui,sans-serif}
+    @media(max-width:700px){
+      .eyebrow{font-size:20px}
+      .intro{font-size:20px}
+      .repo-link{font-size:20px}
+      .filter{font-size:20px;padding:9px 8px}
+      .search{font-size:21px}
+      .results{font-size:17px}
+      .filename{font-size:18px}
+      .format,.load-error{font-size:16px}
+      footer{font-size:16px}
+      .viewer-top,.viewer-bottom{font-size:17px}
+    }
   </style>
 </head>
 <body>
@@ -99,10 +137,10 @@
   <div class="toolbar">
     <div class="shell tools">
       <nav class="filters" aria-label="Filtr galerie">
-        <button class="filter" data-filter="all" aria-pressed="true">Vše <span data-count="all">54</span></button>
-        <button class="filter" data-filter="generated" aria-pressed="false">Generované</button>
-        <button class="filter" data-filter="screens" aria-pressed="false">Snímky</button>
-        <button class="filter" data-filter="other" aria-pressed="false">Ostatní</button>
+        <button class="filter" data-filter="all" aria-pressed="true">Vše <span class="filter-count" data-count="all">54</span></button>
+        <button class="filter" data-filter="generated" aria-pressed="false">Generované <span class="filter-count" data-count="generated">0</span></button>
+        <button class="filter" data-filter="screens" aria-pressed="false">Snímky <span class="filter-count" data-count="screens">0</span></button>
+        <button class="filter" data-filter="other" aria-pressed="false">Ostatní <span class="filter-count" data-count="other">0</span></button>
       </nav>
       <label class="search-wrap"><input class="search" id="search" type="search" placeholder="Hledat soubor…" autocomplete="off" aria-label="Hledat soubor"></label>
     </div>
@@ -116,7 +154,7 @@
 
   <footer class="shell">
     <span>REWI43 — IMAGE ARCHIVE</span>
-    <span>54 ORIGINAL FILES · <a href="https://github.com/akcizur/rewi43/tree/main" target="_blank" rel="noreferrer">SOURCE ON GITHUB ↗</a></span>
+    <span><span id="footer-count">54 ORIGINAL FILES</span> · <a href="https://github.com/akcizur/rewi43/tree/main" target="_blank" rel="noreferrer">SOURCE ON GITHUB ↗</a></span>
   </footer>
 
   <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Prohlížeč obrázků">
@@ -201,6 +239,15 @@
       return "other";
     };
     const urlFor = name => RAW + encodeURIComponent(name);
+    function updateFilterCounts(){
+      const counts = {all:FILES.length,generated:0,screens:0,other:0};
+      FILES.forEach(name => { counts[category(name)] += 1; });
+      document.querySelectorAll("[data-count]").forEach(node => {
+        node.textContent = counts[node.dataset.count] ?? 0;
+      });
+      document.getElementById("repo-count").textContent = `${FILES.length} FILES · MAIN`;
+      document.getElementById("footer-count").textContent = `${FILES.length} ORIGINAL FILES`;
+    }
     const gallery = document.getElementById("gallery");
     const search = document.getElementById("search");
     const empty = document.getElementById("empty");
@@ -347,6 +394,20 @@
     document.getElementById("close").addEventListener("click", closeViewer);
     document.getElementById("previous").addEventListener("click", () => moveViewer(-1));
     document.getElementById("next").addEventListener("click", () => moveViewer(1));
+    let touchStartX = null;
+    viewerStage.addEventListener("touchstart", event => {
+      if (event.touches.length !== 1 || event.target.closest(".viewer-nav")) {
+        touchStartX = null;
+        return;
+      }
+      touchStartX = event.touches[0].clientX;
+    }, {passive:true});
+    viewerStage.addEventListener("touchend", event => {
+      if (touchStartX === null || !event.changedTouches.length) return;
+      const deltaX = event.changedTouches[0].clientX - touchStartX;
+      touchStartX = null;
+      if (Math.abs(deltaX) > 56) moveViewer(deltaX > 0 ? -1 : 1);
+    }, {passive:true});
     viewer.addEventListener("click", event => { if (event.target === viewer) closeViewer(); });
     document.addEventListener("keydown", event => {
       if (!viewer.classList.contains("open")) return;
@@ -354,6 +415,7 @@
       if (event.key === "ArrowLeft") moveViewer(-1);
       if (event.key === "ArrowRight") moveViewer(1);
     });
+    updateFilterCounts();
     render();
   </script>
 </body>
