@@ -209,8 +209,8 @@
     const urlFor = path => RAW + path.split("/").map(encodeURIComponent).join("/");
     const IMAGE_FILE = /\.(apng|avif|bmp|gif|jpe?g|png|svg|tiff?|webp)$/i;
     async function loadRepositoryImages(){
-      const response = await fetch(TREE_API + "&_=" + Date.now(), {
-        cache:"no-store",
+      const response = await fetch(TREE_API, {
+        cache:"no-cache",
         headers:{Accept:"application/vnd.github+json"}
       });
       if(!response.ok) throw new Error("GitHub API odpovědělo HTTP " + response.status);
