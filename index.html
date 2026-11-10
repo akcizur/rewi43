@@ -191,72 +191,38 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const FILES = [
-  "4mJE2Z8TP7YhaK77YGq1b0bICgwJ2m7revQ2pXgrnF7wNaB-Lc2PFmrIsGmAUC6SPcRGrB_tmrM9M0EAzpGcNPAnWpOmOvX7n_c-kp-sy0KDEnI-0pzDCpMVxFK3lbyk6Z1Wl_5x0kPTvMQpsqqztrgbGdc0zwOTrbfAYk1-M8f9uAgPn2I-eQ7BPARDX-pZ.jpg",
-  "Baldý agent v pokřivené knihovně.png",
-  "ChatGPT Image 29. 9. 2026 17_28_26.png",
-  "ChatGPT Image 29. 9. 2026 17_29_41.png",
-  "Gemini_Generated_Image_bjs7obbjs7obbjs7.jpg",
-  "Gemini_Generated_Image_bumkpcbumkpcbumk.jpg",
-  "Gemini_Generated_Image_is6qdeis6qdeis6q.jpg",
-  "Gemini_Generated_Image_km46pckm46pckm46.jpg",
-  "Gemini_Generated_Image_thqphythqphythqp.jpg",
-  "Gemini_Generated_Image_v7bcd2v7bcd2v7bc.jpg",
-  "Gemini_Generated_Image_vcevj5vcevj5vcev.jpg",
-  "Gemini_Generated_Image_x7waycx7waycx7wa.jpg",
-  "L u v.jpg",
-  "L u v.png",
-  "Nepojmenované (3).png",
-  "Nepojmenované (4).png",
-  "Nepojmenované (5).jpg",
-  "Nepojmenované (6).png",
-  "Obrázek ChatGPT 19. 10. 2026 21_37_00.png",
-  "Snímek obrazovky 2026-10-03 164254.png",
-  "Snímek obrazovky 2026-10-03 220006.png",
-  "Snímek obrazovky 2026-10-04 175340.png",
-  "Snímek obrazovky 2026-10-14 231929.png",
-  "Snímek obrazovky 2026-10-17 225113.png",
-  "Snímek obrazovky 2026-10-23 161322.png",
-  "Snímek obrazovky 2026-10-23 194735.png",
-  "Snímek obrazovky 2026-11-05 230747.png",
-  "UIaCF3DKUhiyS_9nmhHRbg@2k.webp",
-  "bytesized.png",
-  "gemini-2.5-flash-image_Přesně_ta_atmosféra_dostavění_Surový_beton_bez_zateplení_ještě_čistý_-0.jpg",
-  "high-level-description-a-black-and-white_cXZdOMx8WpG9w8ir_YDiIg_Z3sQzu-2RiqGmZfFlrJS5w.jpg",
-  "high-level-description-a-dark-analog-fil_0ZkoJu79VVWwS2-QWLQa5w_xouZM4oPQPSX2YcaUGJ26Q.jpg",
-  "high-level-description-a-darkened-nightt_jaVLOZcEVyKuu7a5Qk2Tfg_yNFLONwJRQKN74vVHlpikA_cover.jpg",
-  "high-level-description-a-dim-photograph-_np7_tVFlW7aVaVv9sCsswA_vheZko9_QqyYGU9Sdl9RKg.jpg",
-  "high-level-description-a-photograph-of-a_108rpiSZW-yxelkIXzTvfA_xouZM4oPQPSX2YcaUGJ26Q.jpg",
-  "high-level-description-a-photograph-of-a_6TsccnCsUniQOpGUfywV_g_xouZM4oPQPSX2YcaUGJ26Q.jpg",
-  "high-level-description-a-photograph-of-a_82_uhziuVqSRlORvKkRk-g_xouZM4oPQPSX2YcaUGJ26Q_cover.jpg",
-  "high-level-description-a-photograph-of-a_8SsuOEKfVSW6_oGl_ovvEA_yNFLONwJRQKN74vVHlpikA.jpg",
-  "high-level-description-a-photograph-of-a_GOmetbW4WNmX6jvE-U-zyA__4kTW_2VSzeD-ani-SNaIQ.jpg",
-  "high-level-description-a-photograph-of-a_Jp5woycxXsa22NVpElIhvw__4kTW_2VSzeD-ani-SNaIQ_cover.jpg",
-  "high-level-description-a-photograph-of-a_Rnw7Uh7LXsGWFv6v6KkRiQ__4kTW_2VSzeD-ani-SNaIQ.jpg",
-  "high-level-description-a-photograph-of-a_TI_mZI4tU_2oBLPO8m2FnA_vheZko9_QqyYGU9Sdl9RKg_cover.jpg",
-  "high-level-description-a-photograph-of-a_Wi4iuc1sXGeUId7wkVhedw_yNFLONwJRQKN74vVHlpikA.jpg",
-  "high-level-description-a-photograph-of-a_dSlUIHuXUoqmmrxl2psbwQ_vheZko9_QqyYGU9Sdl9RKg.jpg",
-  "high-level-description-a-photograph-of-a_k979kA4MU4679piaBAzCcw__4kTW_2VSzeD-ani-SNaIQ.jpg",
-  "high-level-description-a-photograph-of-a_mSDedOJbUgqkiimRYoHe-Q__4kTW_2VSzeD-ani-SNaIQ.jpg",
-  "high-level-description-a-photograph-of-a_ozQMdaubUiGTl9SuxAakeA__4kTW_2VSzeD-ani-SNaIQ.jpg",
-  "high-level-description-a-photograph-of-a_s8ULhykdUJ6aUByrmELmYQ_vheZko9_QqyYGU9Sdl9RKg.jpg",
-  "high-level-description-a-photograph-of-a_xBZm_CgRUmi0ZK74yI2Qhg__4kTW_2VSzeD-ani-SNaIQ.jpg",
-  "high-level-description-a-photograph-of-a_yIVJSXx8WSmbfajrLSoJqw__4kTW_2VSzeD-ani-SNaIQ.jpg",
-  "img01.png",
-  "instruction-caption-high-level-instructi_aGyHUgzaUiOHsp9G3cNPRA_W0a-46dzTvWyzhRzpS6mOg.jpg",
-  "mblegacyboot.jpg",
-  "superhot-menu-inspired-v0-mZU2NlO-Sty242NSeV8XjoPfaZ16ip_kNq2-1eIU4tg.webp"
-];
-
-    const RAW = "https://raw.githubusercontent.com/akcizur/rewi43/main/";
+    // Obsah galerie se vždy načítá živě z GitHub tree API.
+    let FILES = [];
+    const REPO = "akcizur/rewi43";
+    const BRANCH = "main";
+    const RAW = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/`;
+    const TREE_API = `https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`;
     const $ = (selector, root=document) => root.querySelector(selector);
     const $$ = (selector, root=document) => [...root.querySelectorAll(selector)];
-    const category = name => {
-      if (name.startsWith("Snímek obrazovky")) return "screens";
+    const baseName = path => path.split("/").pop();
+    const category = path => {
+      const name = baseName(path);
+      if (/^Snímek obrazovky/i.test(name)) return "screens";
       if (/^(Baldý|ChatGPT Image|Gemini_|gemini-|high-level-description|instruction-caption)/i.test(name)) return "generated";
       return "other";
     };
-    const urlFor = name => RAW + name.split("/").map(encodeURIComponent).join("/");
+    const urlFor = path => RAW + path.split("/").map(encodeURIComponent).join("/");
+    const IMAGE_FILE = /\.(apng|avif|bmp|gif|jpe?g|png|svg|tiff?|webp)$/i;
+    async function loadRepositoryImages(){
+      const response = await fetch(TREE_API + "&_=" + Date.now(), {
+        cache:"no-store",
+        headers:{Accept:"application/vnd.github+json"}
+      });
+      if(!response.ok) throw new Error("GitHub API odpovědělo HTTP " + response.status);
+      const data = await response.json();
+      if(data.truncated) throw new Error("GitHub vrátil neúplný seznam souborů.");
+      FILES = (data.tree || [])
+        .filter(entry => entry.type === "blob" && IMAGE_FILE.test(entry.path))
+        .map(entry => entry.path)
+        .sort((a,b) => collator.compare(a,b));
+      if(!FILES.length) throw new Error("V repozitáři nebyly nalezeny žádné podporované obrázky.");
+      return FILES.length;
+    }
     const extOf = name => name.includes(".") ? name.split(".").pop().toUpperCase() : "FILE";
     const collator = new Intl.Collator("cs", {numeric:true,sensitivity:"base"});
     const gallery = $("#gallery"), search = $("#search"), viewer = $("#viewer");
@@ -275,7 +241,7 @@
       state.toastTimer = setTimeout(() => toastNode.classList.remove("show"),1800);
     };
     const counts = () => {
-      const result = {all:FILES.length,generated:0,screens:0,other:0,favorites:favorites.size};
+      const result = {all:FILES.length,generated:0,screens:0,other:0,favorites:FILES.filter(name=>favorites.has(name)).length};
       FILES.forEach(name => result[category(name)]++);
       $$("[data-count]").forEach(el => el.textContent = result[el.dataset.count] ?? 0);
       $("#total-count").textContent = FILES.length + " ORIGINALS";
@@ -325,7 +291,7 @@
         img.addEventListener("error",() => {media.classList.add("error");skeleton.remove();const err=document.createElement("span");err.className="load-error";err.textContent="PREVIEW UNAVAILABLE";media.append(err);},{once:true});
         media.append(skeleton,img);
         const meta = document.createElement("span"); meta.className = "card-meta";
-        const label = document.createElement("span"); label.className = "filename"; label.textContent = name; label.title = name;
+        const label = document.createElement("span"); label.className = "filename"; label.textContent = baseName(name); label.title = name;
         const type = document.createElement("span"); type.className = "filetype"; type.textContent = extOf(name);
         meta.append(label,type);
         const actions = document.createElement("span"); actions.className = "card-actions";
@@ -453,7 +419,26 @@
     });
     viewerImage.addEventListener("pointerup",()=>{pointer=null;});
     viewerImage.addEventListener("pointercancel",()=>{pointer=null;});
-    counts();render();
+    // Inicializace až po načtení aktuálního stromu repozitáře.
+    gallery.setAttribute("aria-busy","true");
+    $("#visible-count").textContent = "LOADING…";
+    $("#total-count").textContent = "SYNCING REPOSITORY";
+    $("#empty").style.display = "block";
+    $("#empty").innerHTML = "<strong>LOADING ARCHIVE.</strong>Načítám aktuální obrázky přímo z GitHub repozitáře…";
+    loadRepositoryImages().then(total => {
+      counts();
+      render();
+      $("#empty").innerHTML = "<strong>NOTHING FOUND.</strong>Uprav hledaný výraz nebo zvolený filtr.";
+      $("#total-count").textContent = total + " ORIGINALS";
+      gallery.setAttribute("aria-busy","false");
+    }).catch(error => {
+      console.error("REWI43 archive sync failed:",error);
+      $("#visible-count").textContent = "SYNC FAILED";
+      $("#total-count").textContent = "REPOSITORY UNAVAILABLE";
+      $("#empty").innerHTML = "<strong>ARCHIVE UNAVAILABLE.</strong>Nepodařilo se načíst obsah repozitáře. Zkontroluj připojení nebo limit GitHub API.";
+      $("#empty").style.display = "block";
+      gallery.setAttribute("aria-busy","false");
+    });
   </script>
 </body>
 </html>
