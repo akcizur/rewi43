@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#101010">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <meta name="description" content="Obrazová galerie repozitáře akcizur/rewi43 — 54 obrázků.">
   <title>REWI43 — Image archive</title>
   <style>
@@ -86,40 +86,80 @@
     @media(max-width:700px){.media{min-height:125px}.thumb{min-height:125px}.media.is-loaded .thumb{min-height:0}.viewer-skeleton{width:68vw;height:48vh}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important;filter:none!important}.card{opacity:1;transform:none}.card.is-visible{animation:none}.thumb,.viewer-image{opacity:1;transform:none;filter:none}.skeleton{animation:none}}
 
-    /* Pixel typography — keep the existing gallery layout and motion. */
-    :root{--font-pixel:"Micro 5",ui-monospace,SFMono-Regular,Menlo,monospace;--radius:4px}
+    /* Pixelify Sans + refined archive interface */
+    :root{--font-pixel:"Pixelify Sans",ui-monospace,monospace;--radius:5px;--line:#2a2a2a;--panel:#151515;--panel-2:#1c1c1c}
     body,button,input,.eyebrow,.results,.format,.load-error,footer,.viewer-top,.viewer-bottom,.viewer-load-error{font-family:var(--font-pixel)}
-    body{letter-spacing:.015em}
-    h1{font-size:clamp(60px,10vw,132px);font-weight:400;letter-spacing:0;line-height:.86}
-    .eyebrow{font-size:22px;line-height:1.15;letter-spacing:.08em}
-    .intro{font-size:22px;line-height:1.25}
-    .repo-link{font-size:21px}
-    .filter{font-size:22px;line-height:1;padding:10px 13px;border-radius:4px;letter-spacing:.01em}
-    .filter-count{margin-left:4px;opacity:.7;font-size:.86em}
-    .search{height:46px;font-size:22px;letter-spacing:.015em;border-radius:4px;padding-left:42px}
-    .search:focus{border-color:#aaa;outline:1px solid #777;outline-offset:2px}
-    .results{font-size:19px;line-height:1.15;letter-spacing:.07em}
-    .filename{font-size:20px;letter-spacing:.01em}
-    .format{font-size:18px}
-    .load-error{font-size:18px;line-height:1.35}
-    .empty{font-size:23px;line-height:1.25;border-radius:4px}
-    footer{font-size:18px;line-height:1.2;letter-spacing:.07em}
-    .viewer-top,.viewer-bottom{font-size:20px;line-height:1.1}
-    .viewer-load-error{font-size:19px;line-height:1.3}
-    .filter:focus-visible,.viewer-btn:focus-visible{outline:2px solid #eee;outline-offset:3px}
-    .viewer-btn{font-family:ui-sans-serif,system-ui,sans-serif}
+    body{letter-spacing:.005em}
+    h1{font-family:var(--font-pixel);font-size:clamp(64px,10vw,132px);font-weight:500;letter-spacing:-.035em;line-height:.82;margin:30px 0 22px}
+    .eyebrow{font-size:17px;line-height:1.2;letter-spacing:.12em}
+    .eyebrow:before{width:6px;height:6px;border-radius:1px}
+    .intro{font-size:17px;line-height:1.45}
+    .repo-link{font-size:17px;letter-spacing:.02em;border:1px solid #3b3b3b;padding:10px 13px;border-radius:4px;transition:background .2s,border-color .2s}
+    .repo-link:hover{background:#eee;color:#111;border-color:#eee}
+    .toolbar{background:rgba(16,16,16,.96);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+    .tools{min-height:82px;gap:22px}
+    .filters{gap:3px;padding:4px;background:#171717;border:1px solid #292929;border-radius:6px}
+    .filter{font-size:16px;line-height:1.1;padding:11px 14px;border:1px solid transparent;border-radius:4px;color:#888;transition:color .18s,background .18s,border-color .18s}
+    .filter:hover{color:#fff;background:#222}
+    .filter[aria-pressed="true"]{background:#e9e9e9;color:#111;border-color:#e9e9e9;box-shadow:0 1px 0 rgba(255,255,255,.15) inset}
+    .filter-count{margin-left:5px;font-size:.78em;opacity:.62}
+    .search-wrap{width:min(390px,42vw);flex:none}
+    .search-wrap:before{content:"⌕";left:15px;font-size:23px;color:#888}
+    .search{height:46px;background:#151515;border:1px solid #303030;border-radius:5px;padding:0 15px 0 43px;font-size:17px;color:#f2f2f2;transition:border-color .2s,background .2s,box-shadow .2s}
+    .search:hover{border-color:#555}
+    .search:focus{background:#191919;border-color:#aaa;outline:none;box-shadow:0 0 0 3px rgba(255,255,255,.055)}
+    .search::placeholder{color:#777}
+    .results{padding:25px 0 16px;font-size:15px;letter-spacing:.08em}
+    .results strong{color:#eee;font-weight:600}
+    .gallery{columns:4 260px;column-gap:14px}
+    .card{margin-bottom:14px;border-color:#282828;border-radius:5px;background:#141414;transition:border-color .25s,transform .35s cubic-bezier(.2,.75,.25,1),box-shadow .35s}
+    .card:hover{border-color:#777;transform:translate3d(0,-3px,0);box-shadow:0 16px 38px rgba(0,0,0,.28)}
+    .card:focus-visible{outline:2px solid #eee;outline-offset:3px}
+    .card-meta{min-height:43px;padding:9px 11px;background:#141414;border-top:1px solid #282828}
+    .filename{font-size:15px;line-height:1.2;color:#d0d0d0}
+    .format{font-size:13px;letter-spacing:.05em;padding:3px 5px;border:1px solid #333;border-radius:3px;color:#999}
+    .card:hover .format{border-color:#666;color:#ddd}
+    .empty{font-size:18px;border-radius:5px;padding:80px 20px}
+    footer{font-size:14px;line-height:1.3;letter-spacing:.07em}
+    footer a{transition:color .2s}
+    footer a:hover{color:#fff}
+    .viewer{background:rgba(7,7,7,.96);backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}
+    .viewer.open{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+    .viewer-top,.viewer-bottom{font-size:16px;letter-spacing:.025em}
+    .viewer-btn{width:42px;height:42px;border-radius:5px;background:#181818;border-color:#3a3a3a;transition:background .2s,color .2s,border-color .2s,transform .2s}
+    .viewer-btn:hover{background:#eee;color:#111;border-color:#eee;transform:translateY(-1px)}
+    .viewer-image{box-shadow:0 20px 80px rgba(0,0,0,.5)}
+    .viewer-bottom a{border:1px solid #414141;border-radius:4px;padding:9px 12px;transition:all .2s}
+    .viewer-bottom a:hover{background:#eee;color:#111;border-color:#eee}
+    .viewer-load-error{font-size:16px}
+    @media(max-width:900px){.tools{align-items:stretch;flex-direction:column;gap:10px}.filters{width:100%;justify-content:stretch}.filter{flex:1;padding-inline:8px}.search-wrap{width:100%}}
     @media(max-width:700px){
-      .eyebrow{font-size:20px}
-      .intro{font-size:20px}
-      .repo-link{font-size:20px}
-      .filter{font-size:20px;padding:9px 8px}
-      .search{font-size:21px}
-      .results{font-size:17px}
-      .filename{font-size:18px}
-      .format,.load-error{font-size:16px}
-      footer{font-size:16px}
-      .viewer-top,.viewer-bottom{font-size:17px}
+      .shell{width:calc(100% - 28px)}
+      header{padding:30px 0 22px}
+      h1{font-size:clamp(58px,16vw,92px);margin:24px 0 18px}
+      .eyebrow{font-size:15px}
+      .intro{font-size:16px;gap:15px}
+      .repo-link{font-size:15px;align-self:flex-start}
+      .tools{min-height:0;padding-top:10px;padding-bottom:10px;gap:9px}
+      .filters{gap:2px;padding:3px}
+      .filter{font-size:14px;padding:10px 4px;white-space:nowrap}
+      .filter-count{margin-left:2px}
+      .search{height:44px;font-size:16px}
+      .results{padding:18px 0 12px;font-size:13px}
+      .gallery{columns:2 145px;column-gap:9px}
+      .card{margin-bottom:9px}
+      .card-meta{min-height:38px;padding:8px}
+      .filename{font-size:13px}
+      .format{font-size:11px;padding:2px 4px}
+      footer{font-size:12px;flex-direction:column}
+      .viewer{padding:12px}
+      .viewer-stage{gap:5px}
+      .viewer-image{max-width:calc(100vw - 76px);max-height:calc(100vh - 150px)}
+      .viewer-btn{width:36px;height:36px}
+      .viewer-top,.viewer-bottom{font-size:13px;gap:10px}
+      .viewer-bottom a{padding:7px 9px}
     }
+    @media(prefers-reduced-motion:reduce){.card:hover,.viewer-btn:hover{transform:none}}
   </style>
 </head>
 <body>
