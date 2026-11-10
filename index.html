@@ -109,7 +109,8 @@
     .viewer-btn:hover{background:#eee;color:#111;border-color:#eee}
     .viewer-btn:disabled{opacity:.3;cursor:not-allowed}
     .viewer-stage{position:relative;display:flex;align-items:center;justify-content:center;gap:clamp(8px,2vw,24px);min-height:0;padding:14px 0;touch-action:pan-y}
-    .viewer-image-wrap{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;flex:1;height:100%;overflow:hidden}
+    .viewer-image-wrap{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;flex:1;height:100%;overflow:auto;scrollbar-width:none}
+    .viewer-image-wrap::-webkit-scrollbar{display:none}
     .viewer-image{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;opacity:0;transform:scale(.985);filter:blur(5px);transition:opacity .25s,transform .4s var(--ease),filter .3s;cursor:zoom-in;user-select:none;-webkit-user-drag:none}
     .viewer-image.ready{opacity:1;transform:scale(1);filter:none}
     .viewer-image.zoomed{max-width:none;max-height:none;cursor:grab;transform:none;object-fit:initial}
@@ -313,8 +314,8 @@
       gallery.replaceChildren();
       const fragment = document.createDocumentFragment();
       state.items.forEach((name,index) => {
-        const card = document.createElement("button");
-        card.type = "button"; card.className = "card";
+        const card = document.createElement("div");
+        card.className = "card"; card.setAttribute("role","button"); card.tabIndex = 0;
         card.style.setProperty("--delay",(index%10)*28+"ms");
         card.setAttribute("aria-label","Otevřít "+name);
         const media = document.createElement("span"); media.className = "media";
@@ -335,6 +336,7 @@
         actions.append(favorite,open);
         card.append(media,meta,actions);
         card.addEventListener("click",() => openViewer(index));
+        card.addEventListener("keydown",event=>{if(event.target===card&&(event.key==="Enter"||event.key===" ")){event.preventDefault();openViewer(index);}});
         fragment.append(card);
       });
       gallery.append(fragment);
